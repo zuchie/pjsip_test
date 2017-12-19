@@ -13,9 +13,72 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
 
     var window: UIWindow?
 
-
     func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplicationLaunchOptionsKey: Any]?) -> Bool {
         // Override point for customization after application launch.
+        var status: pj_status_t
+        
+        status = pjsua_create()
+        
+        if status != PJ_SUCCESS.rawValue {
+            print("Error creating pjsua, status: \(status)")
+            return false
+        }
+        
+        var pjsuaConfig = pjsua_config()
+        var pjsuaMediaConfig = pjsua_media_config()
+        var pjsuaLoggingConfig = pjsua_logging_config()
+        
+        pjsua_config_default(&pjsuaConfig)
+        
+        pjsuaConfig.cb.on_incoming_call = onIncomingCall
+        pjsuaConfig.cb.on_call_media_state = onCallMediaState
+        pjsuaConfig.cb.on_call_state = onCallState
+        pjsuaConfig.cb.on_reg_state = onRegState
+        
+        pjsua_media_config_default(&pjsuaMediaConfig)
+        pjsuaMediaConfig.clock_rate = 16000
+        pjsuaMediaConfig.snd_clock_rate = 16000
+        pjsuaMediaConfig.ec_tail_len = 0
+        
+        pjsua_logging_config_default(&pjsuaLoggingConfig)
+        pjsuaLoggingConfig.msg_logging = pj_bool_t(PJ_TRUE.rawValue)
+        pjsuaLoggingConfig.console_level = 4
+        pjsuaLoggingConfig.level = 5
+        
+        status = pjsua_init(&pjsuaConfig, &pjsuaLoggingConfig, &pjsuaMediaConfig)
+        
+        if status != PJ_SUCCESS.rawValue {
+            print("Error initializing pjsua, status: \(status)")
+            
+            return false
+        }
+        
+        var pjsuaTransportConfig = pjsua_transport_config()
+        
+        pjsua_transport_config_default(&pjsuaTransportConfig)
+        
+        status = pjsua_transport_create(PJSIP_TRANSPORT_UDP, &pjsuaTransportConfig, nil)
+        if status != PJ_SUCCESS.rawValue {
+            print("Error creating UDP transport, status: \(status)")
+            return false
+        }
+
+        //let transportID: pjsua_transport_id = -1
+
+        pjsuaTransportConfig.port = 5061
+        status = pjsua_transport_create(PJSIP_TRANSPORT_TLS, &pjsuaTransportConfig, nil)
+        
+        if status != PJ_SUCCESS.rawValue {
+            print("Error creating TLS transport, status: \(status)")
+            return false
+        }
+
+        status = pjsua_start()
+        if status != PJ_SUCCESS.rawValue {
+            print("Error starting pjsua, status: \(status)")
+            return false
+        }
+        
         return true
     }
 
