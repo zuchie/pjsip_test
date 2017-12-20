@@ -7,6 +7,7 @@
 //
 
 import UIKit
+import AVFoundation
 
 class OutgoingCallViewController: UIViewController {
 
@@ -21,6 +22,12 @@ class OutgoingCallViewController: UIViewController {
         NotificationCenter.default.addObserver(self, selector: #selector(handleCallStatusChanged), name: SIPNotification.callState.notification, object: nil)
         
         NotificationCenter.default.addObserver(self, selector: #selector(handleIncomingCall), name: SIPNotification.incomingCall.notification, object: nil)
+        
+//        let status = pjsua_set_null_snd_dev()
+//        if status != PJ_SUCCESS.rawValue {
+//            print("Error set null sound dev, status: \(status)")
+//            fatalError()
+//        }
 
     }
 
@@ -61,6 +68,66 @@ class OutgoingCallViewController: UIViewController {
         var status = pj_status_t()
         var calleeURI: pj_str_t = pj_str(UnsafeMutablePointer<Int8>(mutating: (destinationURI as NSString).utf8String))
         
+//        do {
+//            try AVAudioSession.sharedInstance().setCategory(AVAudioSessionCategoryPlayAndRecord, mode: AVAudioSessionModeVoiceChat)
+//            try AVAudioSession.sharedInstance().setActive(true)
+//        } catch {
+//            print(error)
+//            fatalError()
+//        }
+//
+//        var captureDeviceID: Int32 = -1000
+//        var playbackDeviceID: Int32 = -1000
+//
+//        status = pjsua_get_snd_dev(&captureDeviceID, &playbackDeviceID)
+//        if status != PJ_SUCCESS.rawValue {
+//            print("Error get sound dev IDs, status: \(status)")
+//            fatalError()
+//        }
+//
+//        status = pjsua_set_snd_dev(captureDeviceID, playbackDeviceID)
+//        if status != PJ_SUCCESS.rawValue {
+//            print("Error set sound dev, status: \(status)")
+//            fatalError()
+//        }
+
+//        switch AVAudioSession.sharedInstance().recordPermission() {
+//
+//        case AVAudioSessionRecordPermission.granted:
+//            print("Permission granted")
+//        case AVAudioSessionRecordPermission.denied:
+//            print("Pemission denied")
+//        case AVAudioSessionRecordPermission.undetermined:
+//            print("Request permission here")
+//            AVAudioSession.sharedInstance().requestRecordPermission({ (granted) in
+//                // Handle granted
+//            })
+//        }
+        
+//        var pf = pj_pool_factory()
+//
+//        status = pjmedia_aud_subsys_init(&pf)
+//        if status != PJ_SUCCESS.rawValue {
+//            var errorMessage: [CChar] = []
+//
+//            pj_strerror(status, &errorMessage, pj_size_t(PJ_ERR_MSG_SIZE))
+//            print("Audio subsystem error, status: \(status), message: \(errorMessage)")
+//            fatalError()
+//        }
+//
+//        var dev_count: UInt32 = 0
+//        let dev_idx = pjmedia_aud_dev_index()
+//        dev_count = pjmedia_aud_dev_count()
+//        print("Got \(dev_count) audio devices")
+//
+//        for _ in 0..<dev_count {
+//            var info = pjmedia_aud_dev_info()
+//            status = pjmedia_aud_dev_get_info(dev_idx, &info)
+//            print(dev_idx, info.name, info.input_count, info.output_count)
+//        }
+        
+        //var callOptions = pjsua_call_setting()
+        
         status = pjsua_call_make_call(accountID, &calleeURI, nil, nil, nil, &callID)
         
         if status != PJ_SUCCESS.rawValue {
@@ -68,6 +135,7 @@ class OutgoingCallViewController: UIViewController {
             
             pj_strerror(status, &errorMessage, pj_size_t(PJ_ERR_MSG_SIZE))
             print("Outgoing call error, status: \(status), message: \(errorMessage)")
+            fatalError()
         }
     }
     
@@ -87,12 +155,14 @@ class OutgoingCallViewController: UIViewController {
         performSegue(withIdentifier: "segueOutgoingCallToIncomingCall", sender: (callID, phoneNumber))
     }
     
+    // Navigation
+    
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
         if segue.identifier == "segueOutgoingCallToIncomingCall" {
             let destinationVC = segue.destination as! IncomingCallViewController
             
             let param = sender as! (pjsua_call_id, String)
-            destinationVC.incomingCallLabel.text = "\(param.0)@\(param.1)"
+            destinationVC.setParam(param.0, param.1)
         }
     }
     

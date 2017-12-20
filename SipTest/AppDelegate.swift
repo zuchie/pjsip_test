@@ -35,16 +35,26 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         pjsuaConfig.cb.on_call_state = onCallState
         pjsuaConfig.cb.on_reg_state = onRegState
         
+        // Media config
         pjsua_media_config_default(&pjsuaMediaConfig)
         pjsuaMediaConfig.clock_rate = 16000
         pjsuaMediaConfig.snd_clock_rate = 16000
         pjsuaMediaConfig.ec_tail_len = 0
-        
+                        
+        // Logging config
         pjsua_logging_config_default(&pjsuaLoggingConfig)
+#if DEBUG
         pjsuaLoggingConfig.msg_logging = pj_bool_t(PJ_TRUE.rawValue)
-        pjsuaLoggingConfig.console_level = 4
+        pjsuaLoggingConfig.console_level = 5
         pjsuaLoggingConfig.level = 5
+#else
+        pjsuaLoggingConfig.msg_logging = pj_bool_t(PJ_FALSE.rawValue)
+        pjsuaLoggingConfig.console_level = 0
+        pjsuaLoggingConfig.level = 0
+#endif
+            
         
+        // Init
         status = pjsua_init(&pjsuaConfig, &pjsuaLoggingConfig, &pjsuaMediaConfig)
         
         if status != PJ_SUCCESS.rawValue {
@@ -53,6 +63,8 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
             return false
         }
         
+        
+        // Transport config
         var pjsuaTransportConfig = pjsua_transport_config()
         
         pjsua_transport_config_default(&pjsuaTransportConfig)

@@ -19,6 +19,8 @@ class ViewController: UIViewController {
         
         //view.addGestureRecognizer(UITapGestureRecognizer(target: view, action: #selector(tapToDismissKeyboard)))
         
+        serverURITextField.text = "siptest.butterflymx.com"
+        
         NotificationCenter.default.addObserver(self, selector: #selector(handleRegistrationStatus), name: SIPNotification.registrationState.notification, object: nil)        
     }
     
@@ -36,7 +38,16 @@ class ViewController: UIViewController {
         let uri = ("sips:\(serverURITextField.text!)" as NSString).utf8String
         let realm = ("\(serverURITextField.text!)" as NSString).utf8String
         let username = ("\(usernameTextField.text!)" as NSString).utf8String
-        let password = ("\(passwordTextField.text!)" as NSString).utf8String
+        //let password = ("\(passwordTextField.text!)" as NSString).utf8String
+        
+        var password: UnsafePointer<Int8>
+        if usernameTextField.text! == "6728" {
+            password = ("123456" as NSString).utf8String!
+        } else if usernameTextField.text! == "panel_4" {
+            password = ("123" as NSString).utf8String!
+        } else {
+            fatalError()
+        }
         
         accountConfig.id = pj_str(UnsafeMutablePointer<Int8>(mutating: fullURL))
         accountConfig.reg_uri = pj_str(UnsafeMutablePointer<Int8>(mutating: uri))

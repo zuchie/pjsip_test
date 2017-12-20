@@ -12,12 +12,19 @@ class IncomingCallViewController: UIViewController {
 
     @IBOutlet weak var incomingCallLabel: UILabel!
     
-    var callID = pjsua_call_id()
+    private var callID = pjsua_call_id()
+    private var phoneNumber = ""
     
     override func viewDidLoad() {
         super.viewDidLoad()
 
+        incomingCallLabel.text = "\(callID): \(phoneNumber)"
         NotificationCenter.default.addObserver(self, selector: #selector(handleCallStatusChanged), name: SIPNotification.callState.notification, object: nil)
+    }
+    
+    func setParam(_ callID: pjsua_call_id, _ phoneNumber: String) {
+        self.callID = callID
+        self.phoneNumber = phoneNumber
     }
 
     @objc func handleCallStatusChanged(_ notification: Notification) {
