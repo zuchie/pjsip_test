@@ -21,14 +21,13 @@ class OutgoingCallViewController: UIViewController {
 
         NotificationCenter.default.addObserver(self, selector: #selector(handleCallStatusChanged), name: SIPNotification.callState.notification, object: nil)
         
-        NotificationCenter.default.addObserver(self, selector: #selector(handleIncomingCall), name: SIPNotification.incomingCall.notification, object: nil)
+        //NotificationCenter.default.addObserver(self, selector: #selector(handleIncomingCall), name: SIPNotification.incomingCall.notification, object: nil)
         
 //        let status = pjsua_set_null_snd_dev()
 //        if status != PJ_SUCCESS.rawValue {
 //            print("Error set null sound dev, status: \(status)")
 //            fatalError()
 //        }
-
     }
 
     @objc func handleCallStatusChanged(_ notification: Notification) {
@@ -148,12 +147,12 @@ class OutgoingCallViewController: UIViewController {
         }
     }
 
-    @objc func handleIncomingCall(_ notification: Notification) {
-        let callID: pjsua_call_id = notification.userInfo!["callID"] as! pjsua_call_id
-        let phoneNumber: String = notification.userInfo!["remoteAddress"] as! String
-        
-        performSegue(withIdentifier: "segueOutgoingCallToIncomingCall", sender: (callID, phoneNumber))
-    }
+//    @objc func handleIncomingCall(_ notification: Notification) {
+//        let callID: pjsua_call_id = notification.userInfo!["callID"] as! pjsua_call_id
+//        let phoneNumber: String = notification.userInfo!["remoteAddress"] as! String
+//
+//        performSegue(withIdentifier: "segueOutgoingCallToIncomingCall", sender: (callID, phoneNumber))
+//    }
     
     // Navigation
     

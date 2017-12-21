@@ -30,6 +30,7 @@
 		B928F8001FE9D4620056118E /* libyuv-arm64-apple-darwin_ios.a in Frameworks */ = {isa = PBXBuildFile; fileRef = B928F7EB1FE9D4620056118E /* libyuv-arm64-apple-darwin_ios.a */; };
 		B928F8011FE9D4620056118E /* libpjsdp-arm64-apple-darwin_ios.a in Frameworks */ = {isa = PBXBuildFile; fileRef = B928F7EC1FE9D4620056118E /* libpjsdp-arm64-apple-darwin_ios.a */; };
 		B928F8021FE9D4620056118E /* libsrtp-arm64-apple-darwin_ios.a in Frameworks */ = {isa = PBXBuildFile; fileRef = B928F7ED1FE9D4620056118E /* libsrtp-arm64-apple-darwin_ios.a */; };
+		B928F8041FEB12010056118E /* ProviderDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = B928F8031FEB12010056118E /* ProviderDelegate.swift */; };
 		B94A28D91FE7532300178838 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = B94A28D81FE7532300178838 /* AppDelegate.swift */; };
 		B94A28DB1FE7532300178838 /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = B94A28DA1FE7532300178838 /* ViewController.swift */; };
 		B94A28DE1FE7532300178838 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = B94A28DC1FE7532300178838 /* Main.storyboard */; };
@@ -65,6 +66,7 @@
 		B928F7EB1FE9D4620056118E /* libyuv-arm64-apple-darwin_ios.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = "libyuv-arm64-apple-darwin_ios.a"; path = "pjproject/lib/arm64/libyuv-arm64-apple-darwin_ios.a"; sourceTree = SOURCE_ROOT; };
 		B928F7EC1FE9D4620056118E /* libpjsdp-arm64-apple-darwin_ios.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = "libpjsdp-arm64-apple-darwin_ios.a"; path = "pjproject/lib/arm64/libpjsdp-arm64-apple-darwin_ios.a"; sourceTree = SOURCE_ROOT; };
 		B928F7ED1FE9D4620056118E /* libsrtp-arm64-apple-darwin_ios.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = "libsrtp-arm64-apple-darwin_ios.a"; path = "pjproject/lib/arm64/libsrtp-arm64-apple-darwin_ios.a"; sourceTree = SOURCE_ROOT; };
+		B928F8031FEB12010056118E /* ProviderDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProviderDelegate.swift; sourceTree = "<group>"; };
 		B94A28D51FE7532300178838 /* SipTest.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = SipTest.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		B94A28D81FE7532300178838 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		B94A28DA1FE7532300178838 /* ViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewController.swift; sourceTree = "<group>"; };
@@ -148,6 +150,7 @@
 				B9A1A2EE1FE845CD00A02AE5 /* Callbacks.swift */,
 				B9A1A2F01FE8883F00A02AE5 /* OutgoingCallViewController.swift */,
 				B9A1A2F21FE8889E00A02AE5 /* IncomingCallViewController.swift */,
+				B928F8031FEB12010056118E /* ProviderDelegate.swift */,
 			);
 			path = SipTest;
 			sourceTree = "<group>";
@@ -277,6 +280,7 @@
 				B9A1A2F11FE8883F00A02AE5 /* OutgoingCallViewController.swift in Sources */,
 				B94A28DB1FE7532300178838 /* ViewController.swift in Sources */,
 				B94A28D91FE7532300178838 /* AppDelegate.swift in Sources */,
+				B928F8041FEB12010056118E /* ProviderDelegate.swift in Sources */,
 				B9A1A2F31FE8889E00A02AE5 /* IncomingCallViewController.swift in Sources */,
 				B9A1A2EF1FE845CD00A02AE5 /* Callbacks.swift in Sources */,
 			);

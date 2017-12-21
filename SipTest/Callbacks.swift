@@ -30,8 +30,12 @@ func onIncomingCall(accountID: pjsua_acc_id, callID: pjsua_call_id, rData: Unsaf
     let remoteAddress = remoteInfo[startIndex..<endIndex].components(separatedBy: ":").last!
     
     DispatchQueue.main.async {
-        NotificationCenter.default.post(name: SIPNotification.incomingCall.notification, object: nil, userInfo: ["callID" : callID, "remoteAddress" : remoteAddress])
+        AppDelegate.shared.providerDelegate.reportIncomingCall(callID: callID, uuid: UUID(), handle: remoteAddress, hasVideo: true, completion: nil)
     }
+    
+//    DispatchQueue.main.async {
+//        NotificationCenter.default.post(name: SIPNotification.incomingCall.notification, object: nil, userInfo: ["callID" : callID, "remoteAddress" : remoteAddress])
+//    }
 }
 
 func onCallState(callID: pjsua_call_id, event: UnsafeMutablePointer<pjsip_event>?) {

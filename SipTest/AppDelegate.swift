@@ -12,9 +12,18 @@ import UIKit
 class AppDelegate: UIResponder, UIApplicationDelegate {
 
     var window: UIWindow?
-
+    var captureDeviceID: Int32 = -1000
+    var playbackDeviceID: Int32 = -1000
+    
+    class var shared: AppDelegate {
+        return UIApplication.shared.delegate as! AppDelegate
+    }
+    
+    var providerDelegate: ProviderDelegate!
+    
     func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplicationLaunchOptionsKey: Any]?) -> Bool {
-        // Override point for customization after application launch.
+
+        providerDelegate = ProviderDelegate()        
         var status: pj_status_t
         
         status = pjsua_create()
@@ -53,7 +62,6 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         pjsuaLoggingConfig.level = 0
 #endif
             
-        
         // Init
         status = pjsua_init(&pjsuaConfig, &pjsuaLoggingConfig, &pjsuaMediaConfig)
         
@@ -62,7 +70,6 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
             
             return false
         }
-        
         
         // Transport config
         var pjsuaTransportConfig = pjsua_transport_config()
@@ -91,9 +98,17 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
             return false
         }
         
+        status = pjsua_get_snd_dev(&captureDeviceID, &playbackDeviceID)
+        if status != PJ_SUCCESS.rawValue {
+            print("Error get sound dev IDs, status: \(status)")
+            fatalError()
+        }
+
+        pjsua_set_no_snd_dev()
+        
         return true
     }
-
+    
     func applicationWillResignActive(_ application: UIApplication) {
         // Sent when the application is about to move from active to inactive state. This can occur for certain types of temporary interruptions (such as an incoming phone call or SMS message) or when the user quits the application and it begins the transition to the background state.
         // Use this method to pause ongoing tasks, disable timers, and invalidate graphics rendering callbacks. Games should use this method to pause the game.
